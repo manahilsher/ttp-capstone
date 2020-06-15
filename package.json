@@ -6,6 +6,7 @@
   "dependencies": {
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.5",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "helmet": "^3.23.0",
     "morgan": "^1.10.0",
@@ -13,7 +14,9 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "PORT=3000 npx nodemon start",
+    "dev_windows": "set PORT=3000q && npx nodemon start"
   },
   "repository": {
     "type": "git",
