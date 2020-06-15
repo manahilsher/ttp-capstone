@@ -3,7 +3,7 @@ const db = require('../db');
 
 const User = db.define('user', {
   username: { type: Sequelize.STRING, allowNull: false },
-  animeList: { type: Sequelize.ARRAY }
+  animeList: { type: Sequelize.ARRAY(Sequelize.INTEGER) }
 });
 
 module.exports = User;
