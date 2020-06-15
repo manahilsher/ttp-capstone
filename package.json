@@ -12,11 +12,18 @@
     "morgan": "^1.10.0",
     "path": "^0.12.7"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  },
   "scripts": {
+<<<<<<< HEAD
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "PORT=3000 npx nodemon start",
     "dev_windows": "set PORT=3000q && npx nodemon start"
+=======
+    "start": "node ./bin/www",
+    "dev": "nodemon ./bin/www"
+>>>>>>> 191e3bd91cbc61956eac8c55974420c39abdaaa1
   },
   "repository": {
     "type": "git",
