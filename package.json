@@ -10,7 +10,9 @@
     "express": "^4.17.1",
     "helmet": "^3.23.0",
     "morgan": "^1.10.0",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "pgtools": "^0.3.0",
+    "sequelize": "^5.21.13"
   },
   "devDependencies": {
     "nodemon": "^2.0.4"
