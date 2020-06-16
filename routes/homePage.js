@@ -12,11 +12,13 @@ router.get("/", async (req, res, next) => {
 });
 
 //route to serve a single anime page
+// id based on the kitsune api anime id, not db id
 router.get("/:id", (req, res, next) => {
   try {
-    const { id } = req.params;
-    res.send(`Anime page: ${id}`);
-  } catch (err) {
+    const { id } = req.params; 
+    res.send(`Anime page: ${id}`); //const page = object.find( c => c.id === parseInt(req.params.id))
+  } catch (err) {                  //if (!page)res.status(404).send('404 not found') 
+                                    //eslse, res.send(page)
     next(err);
   }
 });

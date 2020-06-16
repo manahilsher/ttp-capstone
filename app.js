@@ -86,18 +86,7 @@ const configureApp = () => {
 };
 
 
-
-
 app.listen(3000, () => console.log("listening on port 3000..."))
-
-
-
-
-
-
-
-
-
 
 // Main function declaration;
 const bootApp = async () => {
