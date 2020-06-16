@@ -21,6 +21,11 @@ const seedDatabase = require('./utils/seedDatabase');
 // Our database instance;
 const db = require('./database');
 
+
+
+
+
+
 // A helper function to sync our database;
 const syncDatabase = () => {
   if (process.env.NODE_ENV === 'production') {
@@ -40,9 +45,8 @@ const syncDatabase = () => {
   }
 };
 
-// Instantiate our express application;
-const app = express();
 
+const app = express();
 // A helper function to create our app with configurations and middleware;
 const configureApp = () => {
   app.use(helmet());
@@ -57,8 +61,11 @@ const configureApp = () => {
   //   const apiRouter = require('./routes/index');
 
   // Mount our apiRouter
+  const apiRouter = require("./routes/index")
   //   app.use('/api', apiRouter);
 
+
+  app.use("/api", apiRouter)
   // Error handling;
   app.use((req, res, next) => {
     if (path.extname(req.path).length) {
@@ -78,11 +85,28 @@ const configureApp = () => {
   });
 };
 
+
+
+
+app.listen(3000, () => console.log("listening on port 3000..."))
+
+
+
+
+
+
+
+
+
+
 // Main function declaration;
 const bootApp = async () => {
   await syncDatabase();
   await configureApp();
 };
+
+
+
 
 // Main function invocation;
 bootApp();

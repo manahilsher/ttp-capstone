@@ -8,7 +8,8 @@ router.get("/:id", async (req, res, next) => {
   // query the database for a user with matching id
   try {
     // if successful:
-    const user = await User.findByPk(id);
+    res.send(`Hello user ${id}`);
+    const user = await User.findByPk(id); // using profile id from user profiles
     // send back the user as a response
     res.status(200).json(user);
   } catch (err) {
@@ -17,7 +18,5 @@ router.get("/:id", async (req, res, next) => {
     next(err);
   }
 });
-
-router.post('/', async(req, res, next)  )
 
 module.exports = router;
