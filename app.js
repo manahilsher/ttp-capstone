@@ -1,32 +1,27 @@
-/**
- * Here, we will sync our database, create our application, and export this
- * module so that we can use it in the bin directory, where we will be able to
- * establish a server to listen and handle requests and responses;
- */
-
-// Load environmental variables from .env file
 require('dotenv').config();
 
 const express = require('express');
+const app = express();
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const helmet = require('helmet');
 const compression = require('compression');
 
-// Utilities;
+//Database
 const createLocalDatabase = require('./utils/createLocalDatabase');
 const seedDatabase = require('./utils/seedDatabase');
-
-// Our database instance;
 const db = require('./database');
 
-// Auth
+//Auth
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20');
-const cookieSession = require('cookie-session');
+// const cookieSession = require('cookie-session');
+const cors = require('cors');
+const session = require('express-session');
+const SequelizeStore = require('connect-session-sequelize')(session.Store);
+const sessionStore = new SequelizeStore({ db });
 
-// A helper function to sync our database;
 const syncDatabase = () => {
   if (process.env.NODE_ENV === 'production') {
     db.sync();
@@ -45,26 +40,16 @@ const syncDatabase = () => {
   }
 };
 
-const app = express();
-// A helper function to create our app with configurations and middleware;
 const configureApp = () => {
   app.use(helmet());
   app.use(logger('dev'));
-  // handle request data:
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
   app.use(compression());
   app.use(cookieParser());
+  app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
 
-  // Our apiRouter
-  //   const apiRouter = require('./routes/index');
-
-  // Mount our apiRouter
-  const apiRouter = require('./routes/index');
-  //   app.use('/api', apiRouter);
-
-  app.use('/api', apiRouter);
-  // Error handling;
+  //Error Handling
   app.use((req, res, next) => {
     if (path.extname(req.path).length) {
       const err = new Error('Not found');
@@ -75,7 +60,6 @@ const configureApp = () => {
     }
   });
 
-  // More error handling;
   app.use((err, req, res, next) => {
     console.error(err);
     console.error(err.stack);
@@ -84,16 +68,22 @@ const configureApp = () => {
 
   // AUTH
 
-  // cookieSession config
   app.use(
-    cookieSession({
-      maxAge: 24 * 60 * 60 * 1000, // One day in milliseconds
-      keys: ['randomstringhere']
+    session({
+      secret: 'random string here',
+      store: sessionStore,
+      resave: false,
+      saveUninitialized: false
     })
   );
 
   app.use(passport.initialize()); // Used to initialize passport
   app.use(passport.session()); // Used to persist login sessions
+
+  const apiRouter = require('./routes/index');
+  const authRouter = require('./auth');
+  app.use('/api', apiRouter);
+  app.use('/auth', authRouter);
 
   // Strategy config
   passport.use(
@@ -118,12 +108,21 @@ const configureApp = () => {
   passport.deserializeUser((user, done) => {
     done(null, user);
   });
+  // passport.deserializeUser(async (id, done) => {
+  //   try {
+  //     const user = await db.models.user.findByPk(id);
+  //     done(null, user);
+  //   } catch (err) {
+  //     done(err);
+  //   }
+  // });
 };
 
 app.listen(3000, () => console.log('listening on port 3000...'));
 
 // Main function declaration;
 const bootApp = async () => {
+  await sessionStore.sync();
   await syncDatabase();
   await configureApp();
 };
