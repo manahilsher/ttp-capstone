@@ -16,7 +16,8 @@ router.get('/', async (req, res, next) => {
 router.get('/:id', (req, res, next) => {
   try {
     const { id } = req.params;
-    res.send(`Anime page: ${id}`); //const page = object.find( c => c.id === parseInt(req.params.id))
+    // const page = object.find( c => c.id === parseInt(req.params.id))
+    res.send(`Anime page: ${id}`);
   } catch (err) {
     //if (!page)res.status(404).send('404 not found')
     //eslse, res.send(page)

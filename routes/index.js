@@ -3,11 +3,13 @@ var router = express.Router();
 
 // Subrouters;
 const usersRouter = require('./users');
+const authRouter = require('./google');
 const homeRouter = require('./homePage');
 
 // Mount our subrouters to assemble our apiRouter;
 
 router.use('/users', usersRouter);
+router.use('/auth', authRouter);
 router.use('/', homeRouter);
 
 // Error handling middleware;

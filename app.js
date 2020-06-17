@@ -101,7 +101,7 @@ const configureApp = () => {
       {
         clientID: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        callbackURL: process.env.SERVER_API_URL
+        callbackURL: `${process.env.SERVER_API_URL}/auth/google/callback`
       },
       (accessToken, refreshToken, profile, done) => {
         done(null, profile); // passes the profile data to serializeUser
