@@ -1,18 +1,18 @@
-var express = require("express");
+var express = require('express');
 var router = express.Router();
 
 // Subrouters;
-const usersRouter = require("./users");
-const homeRouter = require("./homePage");
+const usersRouter = require('./users');
+const homeRouter = require('./homePage');
 
 // Mount our subrouters to assemble our apiRouter;
 
-router.use("/users", usersRouter);
-router.use("/", homeRouter);
+router.use('/users', usersRouter);
+router.use('/', homeRouter);
 
 // Error handling middleware;
 router.use((req, res, next) => {
-  const error = new Error("User Not Found!");
+  const error = new Error('User Not Found!');
   error.status = 404;
   next(error);
 });

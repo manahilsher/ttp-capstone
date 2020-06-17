@@ -21,10 +21,10 @@ const seedDatabase = require('./utils/seedDatabase');
 // Our database instance;
 const db = require('./database');
 
-
-
-
-
+// Auth
+const passport = require('passport');
+const GoogleStrategy = require('passport-google-oauth20');
+const cookieSession = require('cookie-session');
 
 // A helper function to sync our database;
 const syncDatabase = () => {
@@ -45,7 +45,6 @@ const syncDatabase = () => {
   }
 };
 
-
 const app = express();
 // A helper function to create our app with configurations and middleware;
 const configureApp = () => {
@@ -61,11 +60,10 @@ const configureApp = () => {
   //   const apiRouter = require('./routes/index');
 
   // Mount our apiRouter
-  const apiRouter = require("./routes/index")
+  const apiRouter = require('./routes/index');
   //   app.use('/api', apiRouter);
 
-
-  app.use("/api", apiRouter)
+  app.use('/api', apiRouter);
   // Error handling;
   app.use((req, res, next) => {
     if (path.extname(req.path).length) {
@@ -83,19 +81,52 @@ const configureApp = () => {
     console.error(err.stack);
     res.status(err.status || 500).send(err.message || 'Internal server error.');
   });
+
+  // AUTH
+
+  // cookieSession config
+  app.use(
+    cookieSession({
+      maxAge: 24 * 60 * 60 * 1000, // One day in milliseconds
+      keys: ['randomstringhere']
+    })
+  );
+
+  app.use(passport.initialize()); // Used to initialize passport
+  app.use(passport.session()); // Used to persist login sessions
+
+  // Strategy config
+  passport.use(
+    new GoogleStrategy(
+      {
+        clientID: process.env.GOOGLE_CLIENT_ID,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+        callbackURL: process.env.SERVER_API_URL
+      },
+      (accessToken, refreshToken, profile, done) => {
+        done(null, profile); // passes the profile data to serializeUser
+      }
+    )
+  );
+
+  // Used to stuff a piece of information into a cookie
+  passport.serializeUser((user, done) => {
+    done(null, user);
+  });
+
+  // Used to decode the received cookie and persist session
+  passport.deserializeUser((user, done) => {
+    done(null, user);
+  });
 };
 
-
-app.listen(3000, () => console.log("listening on port 3000..."))
+app.listen(3000, () => console.log('listening on port 3000...'));
 
 // Main function declaration;
 const bootApp = async () => {
   await syncDatabase();
   await configureApp();
 };
-
-
-
 
 // Main function invocation;
 bootApp();
