@@ -1,11 +1,16 @@
 const express = require('express');
 const router = express.Router();
-const { User } = require('../database/models');
+const User = require('../database/models');
 
 router.post('/login', async (req, res, next) => {
   try {
+    // res.send(req.body);
+    console.log(req.body.email);
+    // res.send(req.body);
     const user = await User.findOne({ where: { email: req.body.email } });
     if (!user) {
+      console.log('no user');
+      // req.signup(user, err => (err ? next(err) : res.json(user)));
       res.status(401).send('Wrong username and/or password');
     } else if (!user.correctPassword(req.body.password)) {
       res.status(401).send('Wrong username and/or password');

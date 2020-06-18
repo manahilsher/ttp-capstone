@@ -3,7 +3,7 @@ const db = require('../db');
 const crypto = require('crypto');
 
 const User = db.define('user', {
-  username: { type: Sequelize.STRING, allowNull: false },
+  // username: { type: Sequelize.STRING, allowNull: false },
   animeList: { type: Sequelize.ARRAY(Sequelize.INTEGER) },
   email: {
     type: Sequelize.STRING,

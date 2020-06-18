@@ -29,6 +29,7 @@
     "dev": "PORT=3001 npx nodemon start",
     "dev_windows": "set PORT=3001 && npx nodemon start"
   },
+  "proxy": "http://localhost:3001",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/manahilsher/ttp-capstone.git"
