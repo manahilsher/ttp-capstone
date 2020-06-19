@@ -62,6 +62,7 @@ router.post('/:id', isUserAuthenticated, async (req, res, next) => {
     let results = {};
 
     // Add the anime id to the user's animeList array
+    console.log("Hi i just put something")
     const currentUser = await User.findByPk(userId);
     // await currentUser.addMovie(movie[0]);
     currentUser.animeList.push(animeId);
