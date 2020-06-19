@@ -6,8 +6,9 @@ const usersRouter = require('./users');
 // const authRouter = require('../auth/google');
 const homeRouter = require('./homePage');
 
+const animesRouter = require('./animes');
 // Mount our subrouters to assemble our apiRouter;
-
+router.use('/animes', animesRouter);
 router.use('/users', usersRouter);
 // router.use('/auth', authRouter);
 router.use('/', homeRouter);

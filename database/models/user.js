@@ -4,7 +4,12 @@ const crypto = require('crypto');
 
 const User = db.define('user', {
   // username: { type: Sequelize.STRING, allowNull: false },
-  animeList: { type: Sequelize.ARRAY(Sequelize.INTEGER) },
+  // animeList: { type: Sequelize.ARRAY(Sequelize.OBJECT) },
+  // name: {
+  //   type: Sequelize.STRING,
+  //   unique:true,
+  //   allowNull: false
+  // },
   email: {
     type: Sequelize.STRING,
     unique: true,

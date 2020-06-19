@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../database/models');
+const {User} = require('../database/models');
 
 router.post('/login', async (req, res, next) => {
   try {
@@ -49,6 +49,7 @@ router.delete('/logout', (req, res, next) => {
 });
 
 router.get('/me', (req, res) => {
+
   res.json(req.user);
 });
 
