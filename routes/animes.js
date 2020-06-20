@@ -31,7 +31,7 @@ router.get("/", async (req, res, next) => {
   });
 router.put("/:id", async (req, res, next) => {
     const { id } = req.params;
-    console.log(req.body)
+    console.log(req.body);
     const updatedObj = { ...req.body };
     try {
       const anime = await Anime.findByPk(id);

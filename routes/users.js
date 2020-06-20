@@ -55,16 +55,16 @@ router.get('/', async (req, res) => {
     } catch (err) {
       next(err);
     }
-    try {
-      const userAnimes = await user.getAnimes();
-      const userAndAnimes = {
-        user: user,
-        animes: userAnimes
-      }
-      res.status(200).json(userAndAnimes);
-    } catch (err) {
-      next(err);
-    }
+    // try {
+    //   const userAnimes = await user.getAnimes();
+    //   const userAndAnimes = {
+    //     user: user,
+    //     animes: userAnimes
+    //   }
+    //   res.status(200).json(userAndAnimes);
+    // } catch (err) {
+    //   next(err);
+    // }
   });
 
   // router.put("/:id", async (req, res, next) => {

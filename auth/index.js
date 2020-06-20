@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {User} = require('../database/models');
+const {User, Anime} = require('../database/models');
 
 router.post('/login', async (req, res, next) => {
   try {
@@ -48,9 +48,16 @@ router.delete('/logout', (req, res, next) => {
   });
 });
 
-router.get('/me', (req, res) => {
-
-  res.json(req.user);
+//Eager load related animes
+router.get('/me', async (req, res, next) => {
+  let user;
+  try {
+  user = await User.findByPk(req.user.id, { include: Anime});
+  res.json(user);
+  }  catch (err) {
+    next(err);
+  }
+  //res.json(req.user);
 });
 
 module.exports = router;
