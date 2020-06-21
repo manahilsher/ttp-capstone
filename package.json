@@ -31,9 +31,10 @@
 
   },
   "scripts": {
-    "start": "node index.js",
+    "start": "node ./bin/www",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "PORT=3001 npx nodemon start"
+
   },
   "proxy": "http://localhost:3001",
   "repository": {
