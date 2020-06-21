@@ -60,7 +60,9 @@ const configureApp = () => {
 	// handle request data:
 	app.use(express.json());
 	app.use(express.urlencoded({ extended: true }));
-	app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
+	app.use(
+		cors({ credentials: true, origin: 'https://zenimee.herokuapp.com/' }),
+	);
 	app.use(compression());
 	app.use(cookieParser());
 
