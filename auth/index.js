@@ -1,63 +1,63 @@
 const express = require('express');
 const router = express.Router();
-const {User, Anime} = require('../database/models');
+const { User, Anime } = require('../database/models');
 
 router.post('/login', async (req, res, next) => {
-  try {
-    // res.send(req.body);
-    console.log(req.body.email);
-    // res.send(req.body);
-    const user = await User.findOne({ where: { email: req.body.email } });
-    if (!user) {
-      console.log('no user');
-      // req.signup(user, err => (err ? next(err) : res.json(user)));
-      res.status(401).send('Wrong username and/or password');
-    } else if (!user.correctPassword(req.body.password)) {
-      res.status(401).send('Wrong username and/or password');
-    } else {
-      req.login(user, err => (err ? next(err) : res.json(user)));
-      // res.status(200).json(user);
-    }
-  } catch (err) {
-    next(err);
-  }
+	try {
+		// res.send(req.body);
+		console.log(req.body.email);
+		// res.send(req.body);
+		const user = await User.findOne({ where: { email: req.body.email } });
+		if (!user) {
+			console.log('no user');
+			// req.signup(user, err => (err ? next(err) : res.json(user)));
+			res.status(401).send('Wrong username and/or password');
+		} else if (!user.correctPassword(req.body.password)) {
+			res.status(401).send('Wrong username and/or password');
+		} else {
+			req.login(user, err => (err ? next(err) : res.json(user)));
+			// res.status(200).json(user);
+		}
+	} catch (err) {
+		next(err);
+	}
 });
 
 router.post('/signup', async (req, res, next) => {
-  try {
-    const user = await User.create(req.body);
-    req.login(user, err => (err ? next(err) : res.json(user)));
-    // res.status(201).send(user);
-  } catch (err) {
-    if (err.name === 'SequelizeUniqueConstraintError') {
-      res.status(401).send('User already exists');
-    } else {
-      next(err);
-    }
-  }
+	try {
+		const user = await User.create(req.body);
+		req.login(user, err => (err ? next(err) : res.json(user)));
+		// res.status(201).send(user);
+	} catch (err) {
+		if (err.name === 'SequelizeUniqueConstraintError') {
+			res.status(401).send('User already exists');
+		} else {
+			next(err);
+		}
+	}
 });
 
 router.delete('/logout', (req, res, next) => {
-  req.logout();
-  req.session.destroy(err => {
-    if (err) {
-      return next(err);
-    } else {
-      res.status(204).end();
-    }
-  });
+	req.logout();
+	req.session.destroy(err => {
+		if (err) {
+			return next(err);
+		} else {
+			res.status(204).end();
+		}
+	});
 });
 
 //Eager load related animes
 router.get('/me', async (req, res, next) => {
-  let user;
-  try {
-  user = await User.findByPk(req.user.id, { include: Anime});
-  res.json(user);
-  }  catch (err) {
-    next(err);
-  }
-  //res.json(req.user);
+	let user;
+	try {
+		user = await User.findByPk(req.user.id, { include: Anime });
+		res.json(user);
+	} catch (err) {
+		next(err);
+	}
+	//res.json(req.user);
 });
 
 module.exports = router;
