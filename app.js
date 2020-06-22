@@ -99,6 +99,16 @@ const configureApp = () => {
 		res.status(err.status || 500).send(err.message || 'Internal server error.');
 	});
 
+	let https_redirect = function(req, res, next) {
+		if (req.headers['x-forwarded-proto'] != 'https') {
+			return res.redirect('https://' + req.headers.host + req.url);
+		} else {
+			return next();
+		}
+	};
+
+	app.use(https_redirect);
+
 	// Mount routers
 	app.use('/api', apiRouter);
 	app.use('/auth', authRouter);
